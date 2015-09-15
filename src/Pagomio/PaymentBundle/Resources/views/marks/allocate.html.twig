@@ -1,0 +1,41 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>{{ entity.name }}</h1>
+    <form name="form_allocate" id="form_allocate" method="post" action="{{ path('save_method', { 'id': entity.id }) }}">
+        <table class="records_list">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% set cont = 1 %}
+            {% for method in paymentMethods %}
+                {% set encon = 0 %}
+                {% for select in selected %}
+                    {% if select['payment_method_id'] == method.id %}
+                    <tr>
+                        <td><input type="checkbox" checked value="{{ method.id }}" name="method_id[{{ cont }}]" /></td>
+                        <td>{{ method.name }}</td>
+                        <td><input type="text" name="commission[{{ cont }}]" value = "{{ select['commission'] }}"></td>
+                    </tr>
+                    {% set encon = 1 %}
+                    {% endif %}
+                {% endfor %}
+
+                {% if encon == 0 %}
+                    <tr>
+                        <td><input type="checkbox" value="{{ method.id }}" name="method_id[{{ cont }}]" /></td>
+                        <td>{{ method.name }}</td>
+                        <td><input type="text" name="commission[{{ cont }}]"></td>
+                    </tr>
+                {% endif %}
+
+                {% set cont = cont+1 %}
+            {% endfor %}
+            </tbody>
+        </table>
+        <input type="submit" valur"enviar">
+    </form>
+    {% endblock %}
